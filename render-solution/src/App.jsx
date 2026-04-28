@@ -1,26 +1,36 @@
 import { useState } from "react"
 
-const App = () => {
-  const [counter, setCounter] = useState(1)
+const Counter = ({counter}) => {
+  return (
+    <>
+      <p>Counter: {counter}</p>
+    </>
+  )
+}
 
-  console.log("rendered")
-  const plusOne = () => {
-    setCounter(counter + 1)
-  }
-  const timesTwo = () => {
-    setCounter(counter * 2)
-  }
-  const secondPower = () => {
-    setCounter(counter ** 2)
-  }
+const App = () => {
+  const [counter, setCounter] = useState(0)
+
+  // no need for these silly functions.
+  // const plusOne = () => {
+  //   setCounter(counter + 1)
+  // }
+  // const updateCounter = (count) => {
+  //   setCounter(counter + count)
+  // }
+  // const reset = () => {
+  //   setCounter(0)
+  // }
 
   return (
     <div>
       <h2>Render solution - using React Hooks</h2>
-      <p>Counter: {counter}</p>
-      <button onClick={plusOne}>+1</button>
-      <button onClick={timesTwo}>*2</button>
-      <button onClick={secondPower}>^2</button>
+      <Counter counter={counter} />
+      <button onClick={() => {setCounter(counter+5)}}>+5</button>
+      <button onClick={() => {setCounter(counter+1)}}>+1</button>
+      <button onClick={() => setCounter(counter-1)}>-1</button>
+      <button onClick={() => setCounter(counter-5)}>-5</button>
+      <button onClick={() => setCounter(0)}>Reset</button>
     </div>
   )
 }
