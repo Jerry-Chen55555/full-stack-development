@@ -1,12 +1,6 @@
 import { useState } from "react"
 
-const Counter = ({counter}) => {
-  return (
-    <>
-      <p>Counter: {counter}</p>
-    </>
-  )
-}
+const Counter = ({counter}) => <p>Counter: {counter}</p>
 
 const App = () => {
   const [counter, setCounter] = useState(0)
