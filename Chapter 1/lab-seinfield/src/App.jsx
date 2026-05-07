@@ -33,7 +33,6 @@ const TotalSeasonViews = ({episodes}) => {
       </p>
     </>
   )
-
 }
 
 const Season = ({season}) => {
