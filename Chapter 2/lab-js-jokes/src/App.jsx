@@ -62,7 +62,6 @@ const App = () => {
   }
   const MostLikedJoke = () => {
     let ID = jokes.reduce((acc, joke, id)=>(joke.likes > jokes[acc].likes ? id : acc), 0)
-    console.log(ID)
     return (
       <>
         <h2>Most Liked JS Joke</h2>
