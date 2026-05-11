@@ -12,6 +12,4 @@ const movies = [
   { id: 8, title: "The Social Network", watchlist: false }
 ];
 
-createRoot(document.getElementById('root')).render(
-  <App movies={movies}/>
-)
+createRoot(document.getElementById('root')).render(<App initialMovies={movies}/>)
