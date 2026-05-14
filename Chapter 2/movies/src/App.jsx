@@ -1,51 +1,67 @@
-import { useState } from "react"
-import Movie from "./components/Movie"
+import React, { useState } from 'react'
+import Movie from './components/Movie'
 
-const App = ({initialMovies}) => {
-  const [movies, setMovies] = useState(initialMovies)
+const App = ({ movies }) => {
   const [movieName, setName] = useState("")
+  const [movieList, setList] = useState(movies)
+  const [filterStatus, updateFilter] = useState(true)
 
-  const addMovie = (e) => {
+  // Decide what movies to show
+  const moviesToShow = filterStatus
+    ? movieList.filter((movie) => movie.watchList)
+    : movieList
+
+  const handleSubmit = (e) => {
     e.preventDefault()
-    console.log("Movie: ", movieName)
+
+    // Prevent empty movie names
+    if (movieName.trim() === "") return
+
+    setList([
+      ...movieList,
+      {
+        id: Math.floor(Math.random() * 10000),
+        title: movieName,
+        watchList: true
+      }
+    ])
+
     setName("")
-    setMovies([...movies, {id: movies.length + 1, title: movieName, watchList: true}])
+  }
+
+  const changeFilter = () => {
+    updateFilter(!filterStatus)
   }
 
   return (
     <div>
       <h2>Movies</h2>
+
+      <button onClick={changeFilter}>
+        {filterStatus
+          ? "Show All Movies"
+          : "Show only Watchlist"}
+      </button>
+
       <ul>
-        {movies.map((movie)=>(<Movie key={movie.id} movie={movie}/>))}
+        {moviesToShow.map((movie) => (
+          <Movie key={movie.id} movie={movie} movieList={movieList} setList={setList} />
+        ))}
       </ul>
-      <form onSubmit={addMovie}>
-        {/* uncontrolled needs a name */}
-        {/* you can use a state for controlled input */}
-        <input onChange={(e)=>setName(e.target.value)} value={movieName} />
-        <button type="submit">Add Movie</button>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          onChange={(e) => setName(e.target.value)}
+          value={movieName}
+          placeholder="Enter movie name"
+        />
+
+        <button type="submit">
+          Add Movie
+        </button>
       </form>
     </div>
   )
 }
 
 export default App
-
-// uncontrolled input field
-// const addMovie = (e) => {
-//   e.preventDefault()
-//   console.log("Movie: ", e.target.movieName.value)
-//   e.target.movieName.value = ""
-// }
-
-{/* {movies.map((m)=>{
-  return <li>{m.title}</li>
-})} */}
-
-{/* <li>{movies[0].title}</li>
-<li>{movies[1].title}</li>
-<li>{movies[2].title}</li>
-<li>{movies[3].title}</li>
-<li>{movies[4].title}</li>
-<li>{movies[5].title}</li>
-<li>{movies[6].title}</li>
-<li>{movies[7].title}</li> */}
