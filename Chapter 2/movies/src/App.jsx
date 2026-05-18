@@ -1,67 +1,59 @@
-import React, { useState } from 'react'
-import Movie from './components/Movie'
+import React from 'react'
+import Movie from "./components/Movie"
+import MovieList from "./components/MovieList"
+import { useState } from 'react'
+
+
+// const Movie = ({movie}) => <li>{movie.title}</li>
 
 const App = ({ movies }) => {
-  const [movieName, setName] = useState("")
-  const [movieList, setList] = useState(movies)
-  const [filterStatus, updateFilter] = useState(true)
 
-  // Decide what movies to show
-  const moviesToShow = filterStatus
-    ? movieList.filter((movie) => movie.watchList)
-    : movieList
+	// const handleSubmit = (e) => {
+	//   e.preventDefault();
+	//   console.log("Movie: ", e.target.movieName.value)
+	//   e.target.movieName.value = "";
+	// }
+	const [filterStatus, filterUpdate] = useState(true);
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+	const [movieArray, setArray] = useState(movies);
 
-    // Prevent empty movie names
-    if (movieName.trim() === "") return
+	const [movieName, setName] = useState("");
 
-    setList([
-      ...movieList,
-      {
-        id: Math.floor(Math.random() * 10000),
-        title: movieName,
-        watchList: true
-      }
-    ])
+	const changeFilter = () => {
+		filterUpdate(!filterStatus)
+	}
 
-    setName("")
-  }
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(movieName);
+		setArray([...movieArray, { id: Math.floor(Math.random() * (10000)), title: movieName, watchlist: false }]);
+		setName("");
+	}
 
-  const changeFilter = () => {
-    updateFilter(!filterStatus)
-  }
+	const filteredList = filterStatus ? movieArray.filter(movie => movie.watchlist) : movieArray;
 
-  return (
-    <div>
-      <h2>Movies</h2>
+	// use filter method. it is similar syntax to map method
 
-      <button onClick={changeFilter}>
-        {filterStatus
-          ? "Show All Movies"
-          : "Show only Watchlist"}
-      </button>
-
-      <ul>
-        {moviesToShow.map((movie) => (
-          <Movie key={movie.id} movie={movie} movieList={movieList} setList={setList} />
-        ))}
-      </ul>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          onChange={(e) => setName(e.target.value)}
-          value={movieName}
-          placeholder="Enter movie name"
-        />
-
-        <button type="submit">
-          Add Movie
-        </button>
-      </form>
-    </div>
-  )
+	return (
+		<div>
+			<h2>
+				Movies App
+			</h2>
+			<MovieList
+				changeFilter={changeFilter}
+				filterStatus={filterStatus}
+				filteredList={filteredList}
+				movieList={movieArray}
+				setList={setArray}
+			/>
+			<form onSubmit={handleSubmit}>
+				{/* uncontrolled needs a name */}
+				{/* you can use a state for controlled input */}
+				<input onChange={(e) => setName(e.target.value)} value={movieName} />
+				<button type="submit">Add Movie</button>
+			</form>
+		</div>
+	)
 }
 
 export default App
